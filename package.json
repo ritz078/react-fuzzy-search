@@ -29,6 +29,8 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "chai": "^3.5.0",
+    "commitizen": "^2.7.6",
+    "cz-conventional-changelog": "^1.1.5",
     "enzyme": "^2.2.0",
     "eslint": "^2.7.0",
     "eslint-config-airbnb": "^7.0.0",
@@ -56,5 +58,10 @@
   "main": "dist/index.js",
   "engines": {
     "npm": "^3.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
