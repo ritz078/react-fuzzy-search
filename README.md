@@ -1,3 +1,3 @@
-# React Fuzzy Component
+# react-fuzzy
+fuzzy search in React
 
-React Fuzzy Component
