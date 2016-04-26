@@ -16,7 +16,7 @@ const config = {
         include: path.resolve(__dirname, '../'),
       },
     ],
-  },
+  }
 };
 
 updateConfig(config);

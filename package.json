@@ -18,7 +18,7 @@
     "publish-storybook": "bash .scripts/publish_storybook.sh"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.11.0",
+    "@kadira/storybook": "^1.18.0",
     "babel-cli": "^6.5.0",
     "babel-core": "^6.5.0",
     "babel-eslint": "^6.0.2",
@@ -29,6 +29,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "chai": "^3.5.0",
+    "classnames": "^2.2.3",
     "commitizen": "^2.7.6",
     "cz-conventional-changelog": "^1.1.5",
     "enzyme": "^2.2.0",
@@ -37,6 +38,7 @@
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
+    "fuse.js": "^2.2.0",
     "git-url-parse": "^6.0.1",
     "jsdom": "^8.3.1",
     "mocha": "^2.4.5",

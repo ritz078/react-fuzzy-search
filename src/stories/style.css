@@ -1,0 +1,19 @@
+.react-fuzzy-search{
+    margin: 20px auto;
+}
+
+::-webkit-input-placeholder {
+    font-size: 16px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    font-size: 16px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 16px;
+}
+
+:-ms-input-placeholder {
+    font-size: 16px;
+}
