@@ -62,8 +62,25 @@ export default class FuzzySearch extends Component {
       selectedIndex: 0
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.fuse = new Fuse(props.list, props.options);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.fuse = new Fuse(props.list, this.getOptions());
+  }
+
+  getOptions() {
+    const {
+      caseSensitive, id, include, keys, shouldSort, sortFn, tokenize, verbose
+    } = this.props;
+
+    return {
+      caseSensitive,
+      id,
+      include,
+      keys,
+      shouldSort,
+      sortFn,
+      tokenize,
+      verbose
+    };
   }
 
   getResultsTemplate() {
@@ -74,13 +91,13 @@ export default class FuzzySearch extends Component {
     });
   }
 
-  handleChange() {
+  handleChange(e) {
     this.setState({
-      results: this.fuse.search(this.refs.searchBox.value)
+      results: this.fuse.search(e.target.value)
     });
   }
 
-  handleKeyPress(e) {
+  handleKeyDown(e) {
     if (e.keyCode === 40 && (this.state.selectedIndex < this.state.results.length - 1)) {
       this.setState({
         selectedIndex: this.state.selectedIndex + 1
@@ -99,6 +116,7 @@ export default class FuzzySearch extends Component {
       });
     }
   }
+
   render() {
     const {
       className,
@@ -113,7 +131,7 @@ export default class FuzzySearch extends Component {
       <div
         className={mainClass}
         style={{ width }}
-        onKeyDown={this.handleKeyPress}
+        onKeyDown={this.handleKeyDown}
       >
         <div style={styles.searchBoxWrapper}>
           <input
@@ -136,19 +154,36 @@ export default class FuzzySearch extends Component {
 }
 
 FuzzySearch.propTypes = {
+  caseSensitive: PropTypes.bool,
   className: PropTypes.string,
+  id: PropTypes.string,
+  include: PropTypes.array,
   onSelect: PropTypes.func.isRequired,
   width: PropTypes.number,
+  keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   list: PropTypes.array.isRequired,
-  options: PropTypes.object.isRequired,
+  placeholder: PropTypes.string,
   resultsTemplate: PropTypes.func,
-  placeholder: PropTypes.string
+  shouldSort: PropTypes.bool,
+  sortFn: PropTypes.func,
+  tokenize: PropTypes.bool,
+  verbose: PropTypes.bool
 };
 
 FuzzySearch.defaultProps = {
+  caseSensitive: false,
+  id: null,
+  include: [],
   width: 430,
+  keys: [],
+  placeholder: 'Search',
   resultsTemplate: defaultResultsTemplate,
-  placeholder: 'Search'
+  shouldSort: true,
+  sortFn(a, b) {
+    return a.score - b.score;
+  },
+  tokenize: false,
+  verbose: false
 };
 
 export default FuzzySearch;

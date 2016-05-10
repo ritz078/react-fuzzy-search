@@ -1,28 +1,107 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import Button from '../index';
+import { mount } from 'enzyme';
+import FuzzySearch from '../index';
 import { expect } from 'chai';
 import sinon from 'sinon';
 const { describe, it } = global;
 
-describe('Button', () => {
-  it('should show the given text', () => {
-    const text = 'The Text';
-    const wrapper = shallow(<Button>{text}</Button>);
-    expect(wrapper.text()).to.be.equal(text);
+const list = [{
+  id: 1,
+  title: 'The Great Gatsby',
+  author: 'F. Scott Fitzgerald'
+}, {
+  id: 2,
+  title: 'The DaVinci Code',
+  author: 'Dan Brown'
+}, {
+  id: 3,
+  title: 'Angels & Demons',
+  author: 'Dan Brown'
+}];
+
+describe('<FuzzySearch />', () => {
+  it('should set correct placeholder text', () => {
+    const onSelect = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        onSelect={onSelect}
+        keys={['author', 'title']}
+        list={list}
+        placeholder="testing"
+      />
+    );
+    const placeholder = wrapper.ref('searchBox').prop('placeholder');
+    expect(placeholder).to.equal('testing');
   });
 
-  it('should handle the click event', () => {
-    const clickMe = sinon.stub();
-    // Here we do a JSDOM render. So, that's why we need to
-    // wrap this with a div.
+  it('should show results on typing', () => {
+    const onSelect = sinon.spy();
     const wrapper = mount(
-      <div>
-        <Button onClick={ clickMe }>ClickMe</Button>
-      </div>
+      <FuzzySearch
+        onSelect={onSelect}
+        keys={['author', 'title']}
+        list={list}
+      />
     );
 
-    wrapper.find('button').simulate('click');
-    expect(clickMe.callCount).to.be.equal(1);
+    const input = wrapper.ref('searchBox');
+    expect(wrapper.state('results').length).to.equal(0);
+
+    input.simulate('change', {
+      target: {
+        value: 't'
+      }
+    });
+
+    expect(wrapper.state('results').length).to.not.equal(0);
+  });
+
+  it('should set results as ids if passed in options', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        id='id'
+      />
+    );
+
+    const input = wrapper.ref('searchBox');
+    input.simulate('change', {
+      target: {
+        value: 't'
+      }
+    });
+
+    expect(wrapper.state('results')).to.eql([2, 1]);
+  });
+
+  it('should call onChange on selection of result', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+      />
+    );
+
+    const input = wrapper.ref('searchBox');
+    input.simulate('change', {
+      target: {
+        value: 't'
+      }
+    });
+
+    expect(wrapper.state('results').length).to.not.equal(0);
+
+    const div = wrapper.find('.react-fuzzy-search');
+    
+    div.simulate('keydown', {
+      keyCode: 13
+    });
+
+    expect(onChange.calledOnce).to.equal(true);
   });
 });

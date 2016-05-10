@@ -17,16 +17,12 @@ const list = [{
   author: 'Dan Brown'
 }];
 
-const options = {
-  keys: ['author', 'title']
-};
-
 storiesOf('SearchBox', module)
   .add('Basic', () => (
     <FuzzySearch
       list={list}
-      options={options}
-      width="430px"
+      keys={['author', 'title']}
+      width={430}
       onSelect={action('selected')}
     />
   ))
@@ -41,7 +37,7 @@ storiesOf('SearchBox', module)
           >
             {val.title}
             <span style={{ float: 'right', opacity: 0.5 }}>by {val.author}</span>
-        </div>
+          </div>
         );
       });
     }
@@ -49,7 +45,7 @@ storiesOf('SearchBox', module)
     return (
       <FuzzySearch
         list={list}
-        options={options}
+        keys={['author', 'title']}
         onSelect={action('selected')}
         resultsTemplate={x}
         placeholder="I am custom placeholder"
