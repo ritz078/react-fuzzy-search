@@ -68,7 +68,18 @@ export default class FuzzySearch extends Component {
 
   getOptions() {
     const {
-      caseSensitive, id, include, keys, shouldSort, sortFn, tokenize, verbose
+      caseSensitive,
+      id,
+      include,
+      keys,
+      shouldSort,
+      sortFn,
+      tokenize,
+      verbose,
+      maxPatternLength,
+      distance,
+      threshold,
+      location
     } = this.props;
 
     return {
@@ -79,7 +90,11 @@ export default class FuzzySearch extends Component {
       shouldSort,
       sortFn,
       tokenize,
-      verbose
+      verbose,
+      maxPatternLength,
+      distance,
+      threshold,
+      location
     };
   }
 
@@ -156,16 +171,20 @@ export default class FuzzySearch extends Component {
 FuzzySearch.propTypes = {
   caseSensitive: PropTypes.bool,
   className: PropTypes.string,
+  distance: PropTypes.number,
   id: PropTypes.string,
   include: PropTypes.array,
+  maxPatternLength: PropTypes.number,
   onSelect: PropTypes.func.isRequired,
   width: PropTypes.number,
   keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   list: PropTypes.array.isRequired,
+  location: PropTypes.number,
   placeholder: PropTypes.string,
   resultsTemplate: PropTypes.func,
   shouldSort: PropTypes.bool,
   sortFn: PropTypes.func,
+  threshold: PropTypes.number,
   tokenize: PropTypes.bool,
   verbose: PropTypes.bool
 };
