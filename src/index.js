@@ -191,16 +191,17 @@ FuzzySearch.propTypes = {
 
 FuzzySearch.defaultProps = {
   caseSensitive: false,
-  id: null,
+  distance: 100,
   include: [],
+  location: 0,
   width: 430,
-  keys: [],
   placeholder: 'Search',
   resultsTemplate: defaultResultsTemplate,
   shouldSort: true,
   sortFn(a, b) {
     return a.score - b.score;
   },
+  threshold: 0.6,
   tokenize: false,
   verbose: false
 };
