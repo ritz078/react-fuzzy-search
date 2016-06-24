@@ -192,8 +192,7 @@ FuzzySearch.propTypes = {
   threshold: PropTypes.number,
   tokenize: PropTypes.bool,
   verbose: PropTypes.bool,
-  autoFocus: PropTypes.bool,
-  value: PropTypes.string
+  autoFocus: PropTypes.bool
 };
 
 FuzzySearch.defaultProps = {
@@ -211,8 +210,7 @@ FuzzySearch.defaultProps = {
   threshold: 0.6,
   tokenize: false,
   verbose: false,
-  autoFocus: false,
-  value: ''
+  autoFocus: false
 };
 
 export default FuzzySearch;
