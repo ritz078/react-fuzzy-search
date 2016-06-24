@@ -18,7 +18,8 @@ const styles = {
   searchBoxWrapper: {
     padding: '4px',
     boxShadow: '0 4px 15px 4px rgba(0,0,0,0.2)',
-    borderRadius: 2
+    borderRadius: 2,
+    backgroundColor: '#fff'
   },
   resultsStyle: {
     backgroundColor: '#fff',
