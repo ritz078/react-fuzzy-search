@@ -4,7 +4,7 @@ fuzzy search in React
 ##Installation
 
 ```shell
-npm install --save react-fuzzy-search
+npm install --save react-fuzzy
 ```
 
 ##Basic Usage

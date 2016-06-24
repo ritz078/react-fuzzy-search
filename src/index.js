@@ -138,7 +138,9 @@ export default class FuzzySearch extends Component {
       className,
       width,
       resultsTemplate,
-      placeholder
+      placeholder,
+      autoFocus,
+      value
     } = this.props;
 
     const mainClass = classNames('react-fuzzy-search', className);
@@ -156,6 +158,8 @@ export default class FuzzySearch extends Component {
             onChange={this.handleChange}
             ref="searchBox"
             placeholder={placeholder}
+            autoFocus={autoFocus}
+            value={value}
           />
         </div>
         {
@@ -187,7 +191,9 @@ FuzzySearch.propTypes = {
   sortFn: PropTypes.func,
   threshold: PropTypes.number,
   tokenize: PropTypes.bool,
-  verbose: PropTypes.bool
+  verbose: PropTypes.bool,
+  autoFocus: PropTypes.bool,
+  value: PropTypes.string
 };
 
 FuzzySearch.defaultProps = {
@@ -204,7 +210,9 @@ FuzzySearch.defaultProps = {
   },
   threshold: 0.6,
   tokenize: false,
-  verbose: false
+  verbose: false,
+  autoFocus: false,
+  value: ''
 };
 
 export default FuzzySearch;
