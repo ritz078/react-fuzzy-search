@@ -11,9 +11,9 @@ const styles = {
     width: '100%',
     outline: 'none',
     fontSize: 16,
-    fontFamily: 'Lato',
     color: '#666',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    fontFamily: 'inherit'
   },
   searchBoxWrapper: {
     padding: '4px',
@@ -27,7 +27,6 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontFamily: 'Lato',
     fontSize: 14
   },
   selectedResultStyle: {
@@ -36,7 +35,6 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontFamily: 'Lato',
     fontSize: 14
   },
   resultsWrapperStyle: {
