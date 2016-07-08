@@ -15,6 +15,42 @@ const list = [{
   id: 3,
   title: 'Angels & Demons',
   author: 'Dan Brown'
+}, {
+  id: 4,
+  title: 'The Greater Gatsby',
+  author: 'F. Scott Fitzgerald'
+}, {
+  id: 5,
+  title: 'The DaVinci1 Code',
+  author: 'Dan Brown'
+}, {
+  id: 6,
+  title: 'Angels1 & Demons',
+  author: 'Dan Brown'
+}, {
+  id: 7,
+  title: 'The Greater2 Gatsby',
+  author: 'F. Scott Fitzgerald'
+}, {
+  id: 8,
+  title: 'The DaVinci2 Code',
+  author: 'Dan Brown'
+}, {
+  id: 9,
+  title: 'Angels2 & Demons',
+  author: 'Dan Brown'
+}, {
+  id: 10,
+  title: 'The Greater Gatsby',
+  author: 'F. Scott Fitzgerald'
+}, {
+  id: 11,
+  title: 'The DaVinci1 Code',
+  author: 'Dan Brown'
+}, {
+  id: 12,
+  title: 'Angels1 & Demons',
+  author: 'Dan Brown'
 }];
 
 storiesOf('SearchBox', module)

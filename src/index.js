@@ -42,14 +42,17 @@ const styles = {
     boxShadow: '0px 12px 30px 2px rgba(0, 0, 0, 0.1)',
     border: '1px solid #eee',
     borderTop: 0,
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    maxHeight: 400,
+    overflow: 'auto',
+    position: 'relative'
   }
 };
 
 const defaultResultsTemplate = (props, state, styl) => {
   return state.results.map((val, i) => {
     const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
-    return <div key={i} style={style}>{val.title}</div>;
+    return <div key={i} style={style} >{val.title}</div>;
   });
 };
 
@@ -101,28 +104,29 @@ export default class FuzzySearch extends Component {
     return this.state.results.map((val, i) => {
       const style = this.state.selectedIndex === i ?
         styles.selectedResultStyle : styles.resultsStyle;
-      return <div key={i} style={style}>{val.title}</div>;
+      return <div key={i} style={style} >{val.title}</div>;
     });
   }
 
   handleChange(e) {
     this.setState({
-      results: this.fuse.search(e.target.value)
+      results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1)
     });
   }
 
   handleKeyDown(e) {
-    if (e.keyCode === 40 && (this.state.selectedIndex < this.state.results.length - 1)) {
+    const { results, selectedIndex } = this.state;
+    if (e.keyCode === 40 && (selectedIndex < results.length - 1)) {
       this.setState({
-        selectedIndex: this.state.selectedIndex + 1
+        selectedIndex: selectedIndex + 1
       });
-    } else if (e.keyCode === 38 && (this.state.selectedIndex > 0)) {
+    } else if (e.keyCode === 38 && (selectedIndex > 0)) {
       this.setState({
-        selectedIndex: this.state.selectedIndex - 1
+        selectedIndex: selectedIndex - 1
       });
     } else if (e.keyCode === 13) {
-      if (this.state.results[this.state.selectedIndex]) {
-        this.props.onSelect(this.state.results[this.state.selectedIndex]);
+      if (results[selectedIndex]) {
+        this.props.onSelect(results[this.state.selectedIndex]);
       }
       this.setState({
         results: [],
@@ -137,8 +141,7 @@ export default class FuzzySearch extends Component {
       width,
       resultsTemplate,
       placeholder,
-      autoFocus,
-      value
+      autoFocus
     } = this.props;
 
     const mainClass = classNames('react-fuzzy-search', className);
@@ -149,7 +152,7 @@ export default class FuzzySearch extends Component {
         style={{ width }}
         onKeyDown={this.handleKeyDown}
       >
-        <div style={styles.searchBoxWrapper}>
+        <div style={styles.searchBoxWrapper} >
           <input
             type="text"
             style={styles.searchBoxStyle}
@@ -157,12 +160,11 @@ export default class FuzzySearch extends Component {
             ref="searchBox"
             placeholder={placeholder}
             autoFocus={autoFocus}
-            value={value}
           />
         </div>
         {
           this.state.results && this.state.results.length > 0 &&
-          <div style={styles.resultsWrapperStyle}>
+          <div style={styles.resultsWrapperStyle} >
             {resultsTemplate(this.props, this.state, styles)}
           </div>
         }
@@ -190,7 +192,8 @@ FuzzySearch.propTypes = {
   threshold: PropTypes.number,
   tokenize: PropTypes.bool,
   verbose: PropTypes.bool,
-  autoFocus: PropTypes.bool
+  autoFocus: PropTypes.bool,
+  maxResults: PropTypes.number
 };
 
 FuzzySearch.defaultProps = {
@@ -208,7 +211,8 @@ FuzzySearch.defaultProps = {
   threshold: 0.6,
   tokenize: false,
   verbose: false,
-  autoFocus: false
+  autoFocus: false,
+  maxResults: 10
 };
 
 export default FuzzySearch;

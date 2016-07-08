@@ -63,7 +63,7 @@ describe('<FuzzySearch />', () => {
         list={list}
         onSelect={onChange}
         keys={['author', 'title']}
-        id='id'
+        id="id"
       />
     );
 
@@ -97,7 +97,7 @@ describe('<FuzzySearch />', () => {
     expect(wrapper.state('results').length).to.not.equal(0);
 
     const div = wrapper.find('.react-fuzzy-search');
-    
+
     div.simulate('keydown', {
       keyCode: 13
     });
