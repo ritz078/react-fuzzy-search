@@ -58,9 +58,6 @@
     "fuse.js": "^2.2.0"
   },
   "main": "dist/index.js",
-  "engines": {
-    "npm": "^3.0.0"
-  },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
