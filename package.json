@@ -4,7 +4,7 @@
   "description": "React Fuzzy Component",
   "repository": {
     "type": "git",
-    "url": "https://github.com/you/repo.git"
+    "url": "https://github.com/ritz078/react-fuzzy-search"
   },
   "license": "MIT",
   "scripts": {
