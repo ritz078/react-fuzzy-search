@@ -182,6 +182,7 @@ FuzzySearch.propTypes = {
   maxPatternLength: PropTypes.number,
   onSelect: PropTypes.func.isRequired,
   width: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   list: PropTypes.array.isRequired,
   location: PropTypes.number,
