@@ -63,13 +63,14 @@ storiesOf('SearchBox', module)
     />
   ))
   .add('Custom Template', () => {
-    function x(props, state, styles) {
+    function x(props, state, styles, clickHandler) {
       return state.results.map((val, i) => {
         const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
         return (
           <div
             key={i}
             style={style}
+            onClick={() => clickHandler(i)}
           >
             {val.title}
             <span style={{ float: 'right', opacity: 0.5 }}>by {val.author}</span>
