@@ -56,7 +56,7 @@ const defaultResultsTemplate = (props, state, styl) => {
   });
 };
 
-export default class FuzzySearch extends Component {
+class FuzzySearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -181,7 +181,6 @@ FuzzySearch.propTypes = {
   include: PropTypes.array,
   maxPatternLength: PropTypes.number,
   onSelect: PropTypes.func.isRequired,
-  width: PropTypes.number,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   list: PropTypes.array.isRequired,
