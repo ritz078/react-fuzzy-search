@@ -27,7 +27,8 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontSize: 14
+    fontSize: 14,
+    cursor: 'pointer'
   },
   selectedResultStyle: {
     backgroundColor: '#f9f9f9',
@@ -35,7 +36,8 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontSize: 14
+    fontSize: 14,
+    cursor: 'pointer'
   },
   resultsWrapperStyle: {
     width: '100%',
@@ -49,10 +51,10 @@ const styles = {
   }
 };
 
-const defaultResultsTemplate = (props, state, styl) => {
+const defaultResultsTemplate = (props, state, styl, clickHandler) => {
   return state.results.map((val, i) => {
     const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
-    return <div key={i} style={style} >{val.title}</div>;
+    return <div key={i} style={style} onClick={() => clickHandler(i)}>{val.title}</div>;
   });
 };
 
@@ -65,6 +67,7 @@ class FuzzySearch extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleMouseClick = this.handleMouseClick.bind(this);
     this.fuse = new Fuse(props.list, this.getOptions());
   }
 
@@ -135,6 +138,18 @@ class FuzzySearch extends Component {
     }
   }
 
+  handleMouseClick(clickedIndex) {
+    const { results } = this.state;
+
+    if (results[clickedIndex]) {
+      this.props.onSelect(results[clickedIndex]);
+    }
+    this.setState({
+      results: [],
+      selectedIndex: 0
+    });
+  }
+
   render() {
     const {
       className,
@@ -165,7 +180,7 @@ class FuzzySearch extends Component {
         {
           this.state.results && this.state.results.length > 0 &&
           <div style={styles.resultsWrapperStyle} >
-            {resultsTemplate(this.props, this.state, styles)}
+            {resultsTemplate(this.props, this.state, styles, this.handleMouseClick)}
           </div>
         }
       </div>

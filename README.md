@@ -32,6 +32,31 @@ const list = [{
     />
 ```
 
+##Custom Result Template
+```js
+<FuzzySearch
+  list={list}
+  keys={['author', 'title']}
+  width={430}
+  onSelect={action('selected')}
+  resultsTemplate={(props, state, styles, mouseHandler) => {
+    return state.results.map((val, i) => {
+      const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
+      return (
+        <div
+          key={i}
+          style={style}
+          onClick={() => mouseHandler(i)}
+        >
+          {val.title}
+          <span style={{ float: 'right', opacity: 0.5 }}>by {val.author}</span>
+        </div>
+      );
+    });
+  }}
+/>
+```
+
 ##Options
 
 attribute|default|description
