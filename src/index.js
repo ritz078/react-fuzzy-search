@@ -14,13 +14,13 @@ const styles = {
     fontSize: 16,
     color: '#666',
     boxSizing: 'border-box',
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
   },
   searchBoxWrapper: {
     padding: '4px',
     boxShadow: '0 4px 15px 4px rgba(0,0,0,0.2)',
     borderRadius: 2,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   resultsStyle: {
     backgroundColor: '#fff',
@@ -28,7 +28,7 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontSize: 14
+    fontSize: 14,
   },
   selectedResultStyle: {
     backgroundColor: '#f9f9f9',
@@ -36,7 +36,7 @@ const styles = {
     padding: '12px',
     borderTop: '1px solid #eee',
     color: '#666',
-    fontSize: 14
+    fontSize: 14,
   },
   resultsWrapperStyle: {
     width: '100%',
@@ -46,23 +46,22 @@ const styles = {
     boxSizing: 'border-box',
     maxHeight: 400,
     overflow: 'auto',
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 };
 
-const defaultResultsTemplate = (props, state, styl) => {
-  return state.results.map((val, i) => {
+const defaultResultsTemplate = (props, state, styl) =>
+  state.results.map((val, i) => {
     const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
-    return <div key={i} style={style} >{val.title}</div>;
+    return <div key={i} style={style}>{val.title}</div>;
   });
-};
 
 class FuzzySearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       results: [],
-      selectedIndex: 0
+      selectedIndex: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -82,7 +81,7 @@ class FuzzySearch extends Component {
       maxPatternLength,
       distance,
       threshold,
-      location
+      location,
     } = this.props;
 
     return {
@@ -97,33 +96,34 @@ class FuzzySearch extends Component {
       maxPatternLength,
       distance,
       threshold,
-      location
+      location,
     };
   }
 
   getResultsTemplate() {
     return this.state.results.map((val, i) => {
-      const style = this.state.selectedIndex === i ?
-        styles.selectedResultStyle : styles.resultsStyle;
-      return <div key={i} style={style} >{val.title}</div>;
+      const style = this.state.selectedIndex === i
+        ? styles.selectedResultStyle
+        : styles.resultsStyle;
+      return <div key={i} style={style}>{val.title}</div>;
     });
   }
 
   handleChange(e) {
     this.setState({
-      results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1)
+      results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
     });
   }
 
   handleKeyDown(e) {
     const { results, selectedIndex } = this.state;
-    if (e.keyCode === 40 && (selectedIndex < results.length - 1)) {
+    if (e.keyCode === 40 && selectedIndex < results.length - 1) {
       this.setState({
-        selectedIndex: selectedIndex + 1
+        selectedIndex: selectedIndex + 1,
       });
-    } else if (e.keyCode === 38 && (selectedIndex > 0)) {
+    } else if (e.keyCode === 38 && selectedIndex > 0) {
       this.setState({
-        selectedIndex: selectedIndex - 1
+        selectedIndex: selectedIndex - 1,
       });
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
@@ -131,29 +131,19 @@ class FuzzySearch extends Component {
       }
       this.setState({
         results: [],
-        selectedIndex: 0
+        selectedIndex: 0,
       });
     }
   }
 
   render() {
-    const {
-      className,
-      width,
-      resultsTemplate,
-      placeholder,
-      autoFocus
-    } = this.props;
+    const { className, width, resultsTemplate, placeholder, autoFocus } = this.props;
 
     const mainClass = classNames('react-fuzzy-search', className);
 
     return (
-      <div
-        className={mainClass}
-        style={{ width }}
-        onKeyDown={this.handleKeyDown}
-      >
-        <div style={styles.searchBoxWrapper} >
+      <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
+        <div style={styles.searchBoxWrapper}>
           <input
             type="text"
             style={styles.searchBoxStyle}
@@ -163,12 +153,11 @@ class FuzzySearch extends Component {
             autoFocus={autoFocus}
           />
         </div>
-        {
-          this.state.results && this.state.results.length > 0 &&
-          <div style={styles.resultsWrapperStyle} >
+        {this.state.results &&
+          this.state.results.length > 0 &&
+          <div style={styles.resultsWrapperStyle}>
             {resultsTemplate(this.props, this.state, styles)}
-          </div>
-        }
+          </div>}
       </div>
     );
   }
@@ -194,7 +183,7 @@ FuzzySearch.propTypes = {
   tokenize: PropTypes.bool,
   verbose: PropTypes.bool,
   autoFocus: PropTypes.bool,
-  maxResults: PropTypes.number
+  maxResults: PropTypes.number,
 };
 
 FuzzySearch.defaultProps = {
@@ -213,7 +202,7 @@ FuzzySearch.defaultProps = {
   tokenize: false,
   verbose: false,
   autoFocus: false,
-  maxResults: 10
+  maxResults: 10,
 };
 
 export default FuzzySearch;
