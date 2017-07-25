@@ -55,5 +55,6 @@ module.exports = {
     'react/no-unescaped-entities': ignore,
     'react/no-array-index-key': warn,
     'react/no-string-refs': warn,
+    'import/no-named-as-default-member': warn
   },
 }
