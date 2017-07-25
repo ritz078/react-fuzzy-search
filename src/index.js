@@ -62,6 +62,7 @@ class FuzzySearch extends Component {
     this.state = {
       results: [],
       selectedIndex: 0,
+      selectedValue: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -128,6 +129,10 @@ class FuzzySearch extends Component {
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
         this.props.onSelect(results[this.state.selectedIndex]);
+        this.setState({
+          selectedValue: results[selectedIndex]
+        })
+        
       }
       this.setState({
         results: [],
