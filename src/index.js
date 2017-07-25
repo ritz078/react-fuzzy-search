@@ -214,6 +214,7 @@ export default class FuzzySearch extends Component {
             ref="searchBox"
             placeholder={placeholder}
             autoFocus={autoFocus}
+            value={this.state.results}
           />
         </div>
         {
