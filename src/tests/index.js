@@ -1,23 +1,29 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import FuzzySearch from '../index';
 import { expect } from 'chai';
 import sinon from 'sinon';
+
+import FuzzySearch from '../index';
+
 const { describe, it } = global;
 
-const list = [{
-  id: 1,
-  title: 'The Great Gatsby',
-  author: 'F. Scott Fitzgerald'
-}, {
-  id: 2,
-  title: 'The DaVinci Code',
-  author: 'Dan Brown'
-}, {
-  id: 3,
-  title: 'Angels & Demons',
-  author: 'Dan Brown'
-}];
+const list = [
+  {
+    id: 1,
+    title: 'The Great Gatsby',
+    author: 'F. Scott Fitzgerald',
+  },
+  {
+    id: 2,
+    title: 'The DaVinci Code',
+    author: 'Dan Brown',
+  },
+  {
+    id: 3,
+    title: 'Angels & Demons',
+    author: 'Dan Brown',
+  },
+];
 
 describe('<FuzzySearch />', () => {
   it('should set correct placeholder text', () => {
@@ -28,7 +34,7 @@ describe('<FuzzySearch />', () => {
         keys={['author', 'title']}
         list={list}
         placeholder="testing"
-      />
+      />,
     );
     const placeholder = wrapper.ref('searchBox').prop('placeholder');
     expect(placeholder).to.equal('testing');
@@ -37,11 +43,7 @@ describe('<FuzzySearch />', () => {
   it('should show results on typing', () => {
     const onSelect = sinon.spy();
     const wrapper = mount(
-      <FuzzySearch
-        onSelect={onSelect}
-        keys={['author', 'title']}
-        list={list}
-      />
+      <FuzzySearch onSelect={onSelect} keys={['author', 'title']} list={list} />,
     );
 
     const input = wrapper.ref('searchBox');
@@ -49,8 +51,8 @@ describe('<FuzzySearch />', () => {
 
     input.simulate('change', {
       target: {
-        value: 't'
-      }
+        value: 't',
+      },
     });
 
     expect(wrapper.state('results').length).to.not.equal(0);
@@ -59,19 +61,14 @@ describe('<FuzzySearch />', () => {
   it('should set results as ids if passed in options', () => {
     const onChange = sinon.spy();
     const wrapper = mount(
-      <FuzzySearch
-        list={list}
-        onSelect={onChange}
-        keys={['author', 'title']}
-        id="id"
-      />
+      <FuzzySearch list={list} onSelect={onChange} keys={['author', 'title']} id="id" />,
     );
 
     const input = wrapper.ref('searchBox');
     input.simulate('change', {
       target: {
-        value: 't'
-      }
+        value: 't',
+      },
     });
 
     expect(wrapper.state('results')).to.eql([2, 1]);
@@ -80,18 +77,14 @@ describe('<FuzzySearch />', () => {
   it('should call onChange on selection of result', () => {
     const onChange = sinon.spy();
     const wrapper = mount(
-      <FuzzySearch
-        list={list}
-        onSelect={onChange}
-        keys={['author', 'title']}
-      />
+      <FuzzySearch list={list} onSelect={onChange} keys={['author', 'title']} />,
     );
 
     const input = wrapper.ref('searchBox');
     input.simulate('change', {
       target: {
-        value: 't'
-      }
+        value: 't',
+      },
     });
 
     expect(wrapper.state('results').length).to.not.equal(0);
@@ -99,7 +92,7 @@ describe('<FuzzySearch />', () => {
     const div = wrapper.find('.react-fuzzy-search');
 
     div.simulate('keydown', {
-      keyCode: 13
+      keyCode: 13,
     });
 
     expect(onChange.calledOnce).to.equal(true);
