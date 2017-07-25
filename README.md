@@ -1,13 +1,13 @@
 # react-fuzzy
 fuzzy search in React
 
-##Installation
+## Installation
 
 ```shell
 npm install --save react-fuzzy
 ```
 
-##Basic Usage
+## Basic Usage
 
 ```js
 const list = [{
@@ -32,7 +32,7 @@ const list = [{
     />
 ```
 
-##Custom Result Template
+## Custom Result Template
 ```js
 <FuzzySearch
   list={list}
@@ -57,7 +57,7 @@ const list = [{
 />
 ```
 
-##Options
+## Options
 
 attribute|default|description
 ---------|-------|-----------
@@ -79,6 +79,6 @@ threshold|0.6|At what point does the match algorithm give up. A threshold of `0.
 tokenize|false|When true, the search algorithm will search individual words and the full string, computing the final score as a function of both. Note that when tokenize is true, the `threshold`, `distance`, and `location` are inconsequential for individual tokens.
 verbose|false|Will print to the console. Useful for debugging.
 
-##License
+## License
 MIT @ Ritesh Kumar
 
