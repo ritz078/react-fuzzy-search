@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Fuse from 'fuse.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+import Fuse from 'fuse.js'
 
 const styles = {
   searchBoxStyle: {
@@ -14,13 +14,13 @@ const styles = {
     fontSize: 16,
     color: '#666',
     boxSizing: 'border-box',
-    fontFamily: 'inherit',
+    fontFamily: 'inherit'
   },
   searchBoxWrapper: {
     padding: '4px',
     boxShadow: '0 4px 15px 4px rgba(0,0,0,0.2)',
     borderRadius: 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   resultsStyle: {
     backgroundColor: '#fff',
@@ -29,7 +29,7 @@ const styles = {
     borderTop: '1px solid #eee',
     color: '#666',
     fontSize: 14,
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   selectedResultStyle: {
     backgroundColor: '#f9f9f9',
@@ -38,7 +38,7 @@ const styles = {
     borderTop: '1px solid #eee',
     color: '#666',
     fontSize: 14,
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   resultsWrapperStyle: {
     width: '100%',
@@ -50,17 +50,13 @@ const styles = {
     overflow: 'auto',
     position: 'relative',
   },
-};
+}
 
-function defaultResultsTemplate(props, state, styl, clickHandler) {
+function defaultResultsTemplate (props, state, styl, clickHandler) {
   return state.results.map((val, i) => {
-    const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
-    return (
-      <div key={i} style={style} onClick={() => clickHandler(i)}>
-        {val.title}
-      </div>
-    );
-  });
+    const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle
+    return <div key={i} style={style} onClick={() => clickHandler(i)}>{val.title}</div>
+  })
 }
 
 export default class FuzzySearch extends Component {
@@ -85,7 +81,7 @@ export default class FuzzySearch extends Component {
     verbose: PropTypes.bool,
     autoFocus: PropTypes.bool,
     maxResults: PropTypes.number,
-  };
+  }
 
   static defaultProps = {
     caseSensitive: false,
@@ -96,30 +92,30 @@ export default class FuzzySearch extends Component {
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
     shouldSort: true,
-    sortFn(a, b) {
-      return a.score - b.score;
+    sortFn (a, b) {
+      return a.score - b.score
     },
     threshold: 0.6,
     tokenize: false,
     verbose: false,
     autoFocus: false,
     maxResults: 10,
-  };
+  }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       results: [],
       selectedIndex: 0,
-      selectedValue: {},
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleMouseClick = this.handleMouseClick.bind(this);
-    this.fuse = new Fuse(props.list, this.getOptions());
+      selectedValue: []
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleMouseClick = this.handleMouseClick.bind(this)
+    this.fuse = new Fuse(props.list, this.getOptions())
   }
 
-  getOptions() {
+  getOptions () {
     const {
       caseSensitive,
       id,
@@ -133,7 +129,7 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
-    } = this.props;
+    } = this.props
 
     return {
       caseSensitive,
@@ -148,67 +144,73 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
-    };
+    }
   }
 
-  getResultsTemplate() {
+  getResultsTemplate () {
     return this.state.results.map((val, i) => {
       const style = this.state.selectedIndex === i
         ? styles.selectedResultStyle
-        : styles.resultsStyle;
-      return <div key={i} style={style}>{val.title}</div>;
-    });
+        : styles.resultsStyle
+      return <div key={i} style={style}>{val.title}</div>
+    })
   }
 
-  handleChange(e) {
+  handleChange (e) {
+    let localValue = []
+    localValue.push(e.target.value)
     this.setState({
       results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
-    });
+      selectedValue: localValue
+    })
   }
 
-  handleKeyDown(e) {
-    const { results, selectedIndex } = this.state;
-    if (e.keyCode === 40 && selectedIndex < results.length - 1) {
+  handleKeyDown (e) {
+    let localValue = this.state.selectedValue
+    const {results, selectedIndex} = this.state
+    if (e.keyCode === 40 && (selectedIndex < results.length - 1)) {
       this.setState({
-        selectedIndex: selectedIndex + 1,
-      });
-    } else if (e.keyCode === 38 && selectedIndex > 0) {
+        selectedIndex: selectedIndex + 1
+      })
+    } else if (e.keyCode === 38 && (selectedIndex > 0)) {
       this.setState({
         selectedIndex: selectedIndex - 1,
-      });
+      })
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
-        this.props.onSelect(results[this.state.selectedIndex]);
+        this.props.onSelect(results[this.state.selectedIndex])
+        localValue.push(results[this.state.selectedIndex].title)
         this.setState({
-          selectedValue: results[this.state.selectedIndex],
-        });
+          selectedValue: localValue
+        })
+
       }
       this.setState({
         results: [],
         selectedIndex: 0,
-      });
+      })
     }
   }
 
-  handleMouseClick(clickedIndex) {
-    const { results } = this.state;
+  handleMouseClick (clickedIndex) {
+    const {results} = this.state
 
     if (results[clickedIndex]) {
-      this.props.onSelect(results[clickedIndex]);
+      this.props.onSelect(results[clickedIndex])
     }
     this.setState({
       results: [],
-      selectedIndex: 0,
-    });
+      selectedIndex: 0
+    })
   }
 
-  render() {
-    const { className, width, resultsTemplate, placeholder, autoFocus } = this.props;
+  render () {
+    const {className, width, resultsTemplate, placeholder, autoFocus} = this.props
 
-    const mainClass = classNames('react-fuzzy-search', className);
+    const mainClass = classNames('react-fuzzy-search', className)
 
     return (
-      <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
+      <div className={mainClass} style={{width}} onKeyDown={this.handleKeyDown}>
         <div style={styles.searchBoxWrapper}>
           <input
             type="text"
@@ -217,15 +219,16 @@ export default class FuzzySearch extends Component {
             ref="searchBox"
             placeholder={placeholder}
             autoFocus={autoFocus}
-            value={this.state.selectedValue && this.state.selectedValue.title}
+            value={this.state.selectedValue}
           />
         </div>
-        {this.state.results &&
-          this.state.results.length > 0 &&
+        {
+          this.state.results && this.state.results.length > 0 &&
           <div style={styles.resultsWrapperStyle}>
             {resultsTemplate(this.props, this.state, styles, this.handleMouseClick)}
-          </div>}
+          </div>
+        }
       </div>
-    );
+    )
   }
 }
