@@ -92,7 +92,7 @@ export default class FuzzySearch extends Component {
     distance: 100,
     include: [],
     location: 0,
-    width: 430,
+    width: 1000,
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
     shouldSort: true,
@@ -197,10 +197,15 @@ export default class FuzzySearch extends Component {
   }
 
   handleMouseClick(clickedIndex) {
+    let localValue = this.state.selectedValue
     const { results } = this.state;
 
     if (results[clickedIndex]) {
       this.props.onSelect(results[clickedIndex]);
+      localValue.push(results[this.state.selectedIndex].title)
+      this.setState({
+        selectedValue: localValue
+      });
     }
     this.setState({
       results: [],
@@ -216,7 +221,7 @@ export default class FuzzySearch extends Component {
     return (
       <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
         <div style={styles.searchBoxWrapper}>
-          <input
+          <textarea
             type="text"
             style={styles.searchBoxStyle}
             onChange={this.handleChange}
