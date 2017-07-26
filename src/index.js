@@ -176,7 +176,7 @@ export default class FuzzySearch extends Component {
       if (results[selectedIndex]) {
         this.props.onSelect(results[this.state.selectedIndex])
         this.setState({
-          selectedValue: results[selectedIndex]
+          selectedValue: results[this.state.selectedIndex]
         })
 
       }
@@ -214,6 +214,7 @@ export default class FuzzySearch extends Component {
             ref="searchBox"
             placeholder={placeholder}
             autoFocus={autoFocus}
+            value={this.state.selectedValue}
           />
         </div>
         {
