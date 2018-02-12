@@ -97,4 +97,26 @@ describe('<FuzzySearch />', () => {
 
     expect(onChange.calledOnce).to.equal(true);
   });
+
+  it('shold overwrite previous props with options passed in', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        options={{ includeMatches: true }}
+      />,
+    );
+
+    const input = wrapper.ref('searchBox');
+    input.simulate('change', {
+      target: {
+        value: 't',
+      },
+    });
+
+    // Each result should have a 'matches' array now with `includeMatches`
+    expect(wrapper.state('results')[0].matches.length).to.not.equal(0);
+  });
 });

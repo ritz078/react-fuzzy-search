@@ -85,6 +85,7 @@ export default class FuzzySearch extends Component {
     verbose: PropTypes.bool,
     autoFocus: PropTypes.bool,
     maxResults: PropTypes.number,
+    options: PropTypes.object,
   };
 
   static defaultProps = {
@@ -133,6 +134,7 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
+      options,
     } = this.props;
 
     return {
@@ -148,6 +150,7 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
+      ...options,
     };
   }
 
