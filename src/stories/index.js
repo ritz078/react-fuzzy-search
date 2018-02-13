@@ -96,4 +96,27 @@ storiesOf('SearchBox', module)
         placeholder="I am custom placeholder"
       />
     );
+  })
+  .add('Passthrough Options', () => {
+    const template = (props, state, styles, click) =>
+      state.results.map(({ item, matches }, i) => {
+        const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
+        return (
+          <div key={i} style={style} onClick={() => click(i)}>
+            {item.title}
+            <span style={{ float: 'right', opacity: 0.5 }}>by {item.author}</span>
+          </div>
+        );
+      });
+
+    return (
+      <FuzzySearch
+        list={list}
+        keys={['author', 'title']}
+        width={430}
+        onSelect={action('selected')}
+        options={{ includeMatches: true }}
+        resultsTemplate={template}
+      />
+    );
   });
