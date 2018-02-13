@@ -98,7 +98,7 @@ describe('<FuzzySearch />', () => {
     expect(onChange.calledOnce).to.equal(true);
   });
 
-  it('shold overwrite previous props with options passed in', () => {
+  it('should overwrite previous props with options passed in', () => {
     const onChange = sinon.spy();
     const wrapper = mount(
       <FuzzySearch
