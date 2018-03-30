@@ -217,7 +217,6 @@ export default class FuzzySearch extends Component {
             type="text"
             style={styles.searchBoxStyle}
             onChange={this.handleChange}
-            ref="searchBox"
             placeholder={placeholder}
             autoFocus={autoFocus}
             value={this.state.selectedValue && this.state.selectedValue.title}

@@ -36,7 +36,7 @@ describe('<FuzzySearch />', () => {
         placeholder="testing"
       />,
     );
-    const placeholder = wrapper.ref('searchBox').prop('placeholder');
+    const placeholder = wrapper.find('input').prop('placeholder');
     expect(placeholder).to.equal('testing');
   });
 
@@ -46,7 +46,7 @@ describe('<FuzzySearch />', () => {
       <FuzzySearch onSelect={onSelect} keys={['author', 'title']} list={list} />,
     );
 
-    const input = wrapper.ref('searchBox');
+    const input = wrapper.find('input');
     expect(wrapper.state('results').length).to.equal(0);
 
     input.simulate('change', {
@@ -64,7 +64,7 @@ describe('<FuzzySearch />', () => {
       <FuzzySearch list={list} onSelect={onChange} keys={['author', 'title']} id="id" />,
     );
 
-    const input = wrapper.ref('searchBox');
+    const input = wrapper.find('input');
     input.simulate('change', {
       target: {
         value: 't',
@@ -80,7 +80,7 @@ describe('<FuzzySearch />', () => {
       <FuzzySearch list={list} onSelect={onChange} keys={['author', 'title']} />,
     );
 
-    const input = wrapper.ref('searchBox');
+    const input = wrapper.find('input');
     input.simulate('change', {
       target: {
         value: 't',
@@ -109,7 +109,7 @@ describe('<FuzzySearch />', () => {
       />,
     );
 
-    const input = wrapper.ref('searchBox');
+    const input = wrapper.find('input');
     input.simulate('change', {
       target: {
         value: 't',
