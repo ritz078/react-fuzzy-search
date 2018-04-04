@@ -93,7 +93,7 @@ export default class FuzzySearch extends Component {
     distance: 100,
     include: [],
     location: 0,
-    width: 430,
+    width: 1000,
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
     shouldSort: true,
@@ -113,6 +113,7 @@ export default class FuzzySearch extends Component {
       results: [],
       selectedIndex: 0,
       selectedValue: {},
+      selectedValue: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -164,12 +165,16 @@ export default class FuzzySearch extends Component {
   }
 
   handleChange(e) {
+    let localValue = []
+    localValue.push(e.target.value)
     this.setState({
       results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
+      selectedValue: localValue
     });
   }
 
   handleKeyDown(e) {
+    let localValue = this.state.selectedValue
     const { results, selectedIndex } = this.state;
     if (e.keyCode === 40 && selectedIndex < results.length - 1) {
       this.setState({
@@ -182,8 +187,9 @@ export default class FuzzySearch extends Component {
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
         this.props.onSelect(results[this.state.selectedIndex]);
+        localValue.push(results[this.state.selectedIndex].title)
         this.setState({
-          selectedValue: results[this.state.selectedIndex],
+          selectedValue: localValue
         });
       }
       this.setState({
@@ -194,10 +200,15 @@ export default class FuzzySearch extends Component {
   }
 
   handleMouseClick(clickedIndex) {
+    let localValue = this.state.selectedValue
     const { results } = this.state;
 
     if (results[clickedIndex]) {
       this.props.onSelect(results[clickedIndex]);
+      localValue.push(results[this.state.selectedIndex].title)
+      this.setState({
+        selectedValue: localValue
+      });
     }
     this.setState({
       results: [],
@@ -213,13 +224,13 @@ export default class FuzzySearch extends Component {
     return (
       <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
         <div style={styles.searchBoxWrapper}>
-          <input
+          <textarea
             type="text"
             style={styles.searchBoxStyle}
             onChange={this.handleChange}
             placeholder={placeholder}
             autoFocus={autoFocus}
-            value={this.state.selectedValue && this.state.selectedValue.title}
+            value={this.state.selectedValue}
           />
         </div>
         {this.state.results &&
