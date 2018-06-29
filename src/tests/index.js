@@ -25,6 +25,16 @@ const list = [
   },
 ];
 
+const triggerDropdown = (wrapper, letter='t') => {
+    const input = wrapper.find('input');
+
+    input.simulate('change', {
+      target: {
+        value: letter,
+      },
+    });
+}
+
 describe('<FuzzySearch />', () => {
   it('should set correct placeholder text', () => {
     const onSelect = sinon.spy();
@@ -120,28 +130,23 @@ describe('<FuzzySearch />', () => {
     expect(wrapper.state('results')[0].matches.length).to.not.equal(0);
   });
 
-  it('should use resultTitle property if given', () => {
+  it('should use resultKey property if given', () => {
     const wrapper = mount(
       <FuzzySearch
         list={list}
-        resultTitle={'author'}
+        resultKey={'author'}
         keys={['author', 'title']}
         onSelect={sinon.spy()} 
       />,
     );
 
-    const input = wrapper.find('input');
-    input.simulate('change', {
-      target: {
-        value: 't',
-      },
-    });
+    triggerDropdown(wrapper);
 
     expect(wrapper.find('div[children="F. Scott Fitzgerald"]')).to.have.length(1);
   });
 
 
-  it('should use default title property if resultTitle not given', () => {
+  it('should use default title property if resultKey not given', () => {
     const wrapper = mount(
       <FuzzySearch
         list={list}
@@ -150,12 +155,23 @@ describe('<FuzzySearch />', () => {
       />,
     );
 
-    const input = wrapper.find('input');
-    input.simulate('change', {
-      target: {
-        value: 't',
-      },
-    });
+    triggerDropdown(wrapper);
+
+    expect(wrapper.find('div[children="The Great Gatsby"]')).to.have.length(1);
+  });
+
+  it('should ignore resultKey if id is given', () => {
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        id={'title'}
+        resultKey={'author'}
+        keys={['author', 'title']}
+        onSelect={sinon.spy()} 
+      />,
+    );
+
+    triggerDropdown(wrapper);
 
     expect(wrapper.find('div[children="The Great Gatsby"]')).to.have.length(1);
   });

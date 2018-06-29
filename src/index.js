@@ -55,9 +55,11 @@ const styles = {
 function defaultResultsTemplate(props, state, styl, clickHandler) {
   return state.results.map((val, i) => {
     const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
+    // if ID was given, val is text and not an object, so just use the text
+    const resultKeyText = props.id ? val : val[props.resultKey];
     return (
       <div key={i} style={style} onClick={() => clickHandler(i)}>
-        {val[props.resultTitle]}
+        {resultKeyText}
       </div>
     );
   });
@@ -76,7 +78,7 @@ export default class FuzzySearch extends Component {
     keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     list: PropTypes.array.isRequired,
     location: PropTypes.number,
-    resultTitle: PropTypes.string,
+    resultKey: PropTypes.string,
     placeholder: PropTypes.string,
     resultsTemplate: PropTypes.func,
     shouldSort: PropTypes.bool,
@@ -94,7 +96,7 @@ export default class FuzzySearch extends Component {
     distance: 100,
     include: [],
     location: 0,
-    resultTitle: 'title',
+    resultKey: 'title',
     width: 430,
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
@@ -136,7 +138,7 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
-      resultTitle,
+      resultKey,
       options,
     } = this.props;
 
@@ -153,7 +155,7 @@ export default class FuzzySearch extends Component {
       distance,
       threshold,
       location,
-      resultTitle,
+      resultKey,
       ...options,
     };
   }
