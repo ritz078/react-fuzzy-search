@@ -71,7 +71,7 @@ describe('<FuzzySearch />', () => {
       },
     });
 
-    expect(wrapper.state('results')).to.eql([2, 1]);
+    expect(wrapper.state('results')).to.eql(['1', '2']);
   });
 
   it('should call onChange on selection of result', () => {
@@ -118,5 +118,45 @@ describe('<FuzzySearch />', () => {
 
     // Each result should have a 'matches' array now with `includeMatches`
     expect(wrapper.state('results')[0].matches.length).to.not.equal(0);
+  });
+
+  it('should use resultTitle property if given', () => {
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        resultTitle={'author'}
+        keys={['author', 'title']}
+        onSelect={sinon.spy()} 
+      />,
+    );
+
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: {
+        value: 't',
+      },
+    });
+
+    expect(wrapper.find('div[children="F. Scott Fitzgerald"]')).to.have.length(1);
+  });
+
+
+  it('should use default title property if resultTitle not given', () => {
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        keys={['author', 'title']}
+        onSelect={sinon.spy()} 
+      />,
+    );
+
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: {
+        value: 't',
+      },
+    });
+
+    expect(wrapper.find('div[children="The Great Gatsby"]')).to.have.length(1);
   });
 });
