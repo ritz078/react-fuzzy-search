@@ -169,6 +169,25 @@ export default class FuzzySearch extends Component {
     });
   }
 
+  selectItem(index) {
+    const { results } = this.state;
+    const selectedIndex = index || this.state.selectedIndex;
+    const result = results[selectedIndex];
+    if (result) {
+      // send result to onSelectMethod
+      this.props.onSelect(result);
+      // and set it as input value
+      this.setState({
+        selectedValue: result,
+      });
+    }
+    // hide dropdown
+    this.setState({
+      results: [],
+      selectedIndex: 0,
+    });
+  }
+
   handleKeyDown(e) {
     const { results, selectedIndex } = this.state;
     if (e.keyCode === 40 && selectedIndex < results.length - 1) {
@@ -180,29 +199,12 @@ export default class FuzzySearch extends Component {
         selectedIndex: selectedIndex - 1,
       });
     } else if (e.keyCode === 13) {
-      if (results[selectedIndex]) {
-        this.props.onSelect(results[this.state.selectedIndex]);
-        this.setState({
-          selectedValue: results[this.state.selectedIndex],
-        });
-      }
-      this.setState({
-        results: [],
-        selectedIndex: 0,
-      });
+      this.selectItem();
     }
   }
 
   handleMouseClick(clickedIndex) {
-    const { results } = this.state;
-
-    if (results[clickedIndex]) {
-      this.props.onSelect(results[clickedIndex]);
-    }
-    this.setState({
-      results: [],
-      selectedIndex: 0,
-    });
+    this.selectItem(clickedIndex);
   }
 
   render() {
