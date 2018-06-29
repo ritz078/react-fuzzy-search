@@ -175,4 +175,23 @@ describe('<FuzzySearch />', () => {
 
     expect(wrapper.find('div[children="The Great Gatsby"]')).to.have.length(1);
   });
+
+  it('should set input value even if no title on selectedValue (if ID set)', () => {
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        id={'title'}
+        keys={['author', 'title']}
+        onSelect={sinon.spy()}
+      />,
+    );
+
+    triggerDropdown(wrapper);
+
+    wrapper.find('.react-fuzzy-search').simulate('keydown', {
+      keyCode: 13,
+    });
+
+    expect(wrapper.find('input').props().value).to.equal('The Great Gatsby');
+  });
 });

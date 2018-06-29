@@ -117,6 +117,7 @@ export default class FuzzySearch extends Component {
       results: [],
       selectedIndex: 0,
       selectedValue: {},
+      inputValue: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -187,9 +188,12 @@ export default class FuzzySearch extends Component {
       });
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
-        this.props.onSelect(results[this.state.selectedIndex]);
+        const result = results[this.state.selectedIndex];
+        this.props.onSelect(result);
         this.setState({
-          selectedValue: results[this.state.selectedIndex],
+          selectedValue: result,
+          // use title for input value if 'title' exists
+          inputValue: result.title || result
         });
       }
       this.setState({
@@ -225,7 +229,7 @@ export default class FuzzySearch extends Component {
             onChange={this.handleChange}
             placeholder={placeholder}
             autoFocus={autoFocus}
-            value={this.state.selectedValue && this.state.selectedValue.title}
+            value={this.state.inputValue}
           />
         </div>
         {this.state.results &&
