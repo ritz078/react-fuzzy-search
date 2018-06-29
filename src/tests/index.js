@@ -134,4 +134,23 @@ describe('<FuzzySearch />', () => {
     // Each result should have a 'matches' array now with `includeMatches`
     expect(wrapper.state('results')[0].matches.length).to.not.equal(0);
   });
+
+  it('should set input value even if no title on selectedValue (if ID set)', () => {
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        id={'title'}
+        keys={['author', 'title']}
+        onSelect={sinon.spy()}
+      />,
+    );
+
+    triggerDropdown(wrapper);
+
+    wrapper.find('.react-fuzzy-search').simulate('keydown', {
+      keyCode: 13,
+    });
+
+    expect(wrapper.find('input').props().value).to.equal('The Great Gatsby');
+  });
 });

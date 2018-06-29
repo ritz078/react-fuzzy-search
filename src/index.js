@@ -113,6 +113,7 @@ export default class FuzzySearch extends Component {
       results: [],
       selectedIndex: 0,
       selectedValue: {},
+      inputValue: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -179,6 +180,8 @@ export default class FuzzySearch extends Component {
       // and set it as input value
       this.setState({
         selectedValue: result,
+        // use title for input value if 'title' exists
+        inputValue: result.title || result
       });
     }
     // hide dropdown
@@ -221,7 +224,7 @@ export default class FuzzySearch extends Component {
             onChange={this.handleChange}
             placeholder={placeholder}
             autoFocus={autoFocus}
-            value={this.state.selectedValue && this.state.selectedValue.title}
+            value={this.state.inputValue}
           />
         </div>
         {this.state.results &&
