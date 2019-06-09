@@ -113,6 +113,7 @@ export default class FuzzySearch extends Component {
       results: [],
       selectedIndex: 0,
       selectedValue: {},
+      value: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -156,29 +157,39 @@ export default class FuzzySearch extends Component {
 
   getResultsTemplate() {
     return this.state.results.map((val, i) => {
-      const style = this.state.selectedIndex === i
-        ? styles.selectedResultStyle
-        : styles.resultsStyle;
-      return <div key={i} style={style}>{val.title}</div>;
+      const style =
+        this.state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
+      return (
+        <div key={i} style={style}>
+          {val.title}
+        </div>
+      );
     });
   }
 
   handleChange(e) {
     this.setState({
       results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
+      value: e.target.value,
     });
   }
 
   handleKeyDown(e) {
     const { results, selectedIndex } = this.state;
+
+    // Handle DOWN arrow
     if (e.keyCode === 40 && selectedIndex < results.length - 1) {
       this.setState({
         selectedIndex: selectedIndex + 1,
       });
+
+      // Handle UP arrow
     } else if (e.keyCode === 38 && selectedIndex > 0) {
       this.setState({
         selectedIndex: selectedIndex - 1,
       });
+
+      // Handle ENTER
     } else if (e.keyCode === 13) {
       if (results[selectedIndex]) {
         this.props.onSelect(results[this.state.selectedIndex]);
@@ -189,6 +200,7 @@ export default class FuzzySearch extends Component {
       this.setState({
         results: [],
         selectedIndex: 0,
+        value: results[this.state.selectedIndex].item.value,
       });
     }
   }
@@ -202,11 +214,17 @@ export default class FuzzySearch extends Component {
     this.setState({
       results: [],
       selectedIndex: 0,
+      value: results[this.state.selectedIndex].item.value,
     });
   }
 
   render() {
-    const { className, width, resultsTemplate, placeholder, autoFocus } = this.props;
+    const { autoFocus, className, list, placeholder, resultsTemplate, width } = this.props;
+
+    // Update the search space list
+    if (this.fuse.setCollection && list) {
+      this.fuse.setCollection(list);
+    }
 
     const mainClass = classNames('react-fuzzy-search', className);
 
@@ -214,19 +232,19 @@ export default class FuzzySearch extends Component {
       <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
         <div style={styles.searchBoxWrapper}>
           <input
-            type="text"
-            style={styles.searchBoxStyle}
+            autoFocus={autoFocus}
             onChange={this.handleChange}
             placeholder={placeholder}
-            autoFocus={autoFocus}
-            value={this.state.selectedValue && this.state.selectedValue.title}
+            style={styles.searchBoxStyle}
+            type="text"
+            value={this.state.value}
           />
         </div>
-        {this.state.results &&
-          this.state.results.length > 0 &&
+        {this.state.results && this.state.results.length > 0 && (
           <div style={styles.resultsWrapperStyle}>
             {resultsTemplate(this.props, this.state, styles, this.handleMouseClick)}
-          </div>}
+          </div>
+        )}
       </div>
     );
   }
