@@ -200,7 +200,7 @@ export default class FuzzySearch extends Component {
       this.setState({
         results: [],
         selectedIndex: 0,
-        value: results[this.state.selectedIndex].item.value,
+        value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
       });
     }
   }
@@ -214,7 +214,7 @@ export default class FuzzySearch extends Component {
     this.setState({
       results: [],
       selectedIndex: 0,
-      value: results[this.state.selectedIndex].item.value,
+      value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
     });
   }
 
