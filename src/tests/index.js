@@ -71,7 +71,7 @@ describe('<FuzzySearch />', () => {
       },
     });
 
-    expect(wrapper.state('results')).to.eql([2, 1]);
+    expect(wrapper.state('results')).to.eql(['1', '2']);
   });
 
   it('should call onChange on selection of result', () => {
