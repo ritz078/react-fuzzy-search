@@ -69,6 +69,7 @@ include|[]|An array of values that should be included from the searcher's output
 maxPatternLength|32|The maximum length of the pattern. The longer the pattern, the more intensive the search operation will be. Whenever the pattern exceeds the maxPatternLength, an error will be thrown.
 onSelect| noop | Function to be executed on selection of any result.
 width|430|width of the fuzzy searchbox
+keyForDisplayName|title|The key which should be used for list item text.
 keys|all[Array]|List of properties that will be searched. This also supports nested properties.
 list|null|Array of properties to be filtered.
 placeholder|'Search'|Placeholder of the searchbox

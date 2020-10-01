@@ -71,7 +71,7 @@ describe('<FuzzySearch />', () => {
       },
     });
 
-    expect(wrapper.state('results')).to.eql([2, 1]);
+    expect(wrapper.state('results')).to.eql(['1', '2']);
   });
 
   it('should call onChange on selection of result', () => {
@@ -118,5 +118,28 @@ describe('<FuzzySearch />', () => {
 
     // Each result should have a 'matches' array now with `includeMatches`
     expect(wrapper.state('results')[0].matches.length).to.not.equal(0);
+  });
+
+  it('should display keyForDisplayName when passed in', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        keyForDisplayName="author"
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        options={{ includeMatches: true }}
+      />,
+    );
+
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: {
+        value: 'f',
+      },
+    });
+
+    // Each result should have a 'matches' array now with `includeMatches`
+    expect(wrapper.state('results')[0].item.title).to.equal('The Great Gatsby');
   });
 });

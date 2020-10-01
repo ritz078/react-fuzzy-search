@@ -57,7 +57,7 @@ function defaultResultsTemplate(props, state, styl, clickHandler) {
     const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
     return (
       <div key={i} style={style} onClick={() => clickHandler(i)}>
-        {val.title}
+        {val[props.keyForDisplayName]}
       </div>
     );
   });
@@ -73,6 +73,7 @@ export default class FuzzySearch extends Component {
     maxPatternLength: PropTypes.number,
     onSelect: PropTypes.func.isRequired,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    keyForDisplayName: PropTypes.string,
     keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     list: PropTypes.array.isRequired,
     location: PropTypes.number,
@@ -92,6 +93,7 @@ export default class FuzzySearch extends Component {
     caseSensitive: false,
     distance: 100,
     include: [],
+    keyForDisplayName: 'title',
     location: 0,
     width: 430,
     placeholder: 'Search',
@@ -155,18 +157,6 @@ export default class FuzzySearch extends Component {
     };
   }
 
-  getResultsTemplate() {
-    return this.state.results.map((val, i) => {
-      const style =
-        this.state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
-      return (
-        <div key={i} style={style}>
-          {val.title}
-        </div>
-      );
-    });
-  }
-
   handleChange(e) {
     this.setState({
       results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
@@ -200,7 +190,7 @@ export default class FuzzySearch extends Component {
       this.setState({
         results: [],
         selectedIndex: 0,
-        value: results[this.state.selectedIndex].item.value,
+        value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
       });
     }
   }
@@ -214,7 +204,7 @@ export default class FuzzySearch extends Component {
     this.setState({
       results: [],
       selectedIndex: 0,
-      value: results[this.state.selectedIndex].item.value,
+      value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
     });
   }
 
