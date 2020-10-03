@@ -63,12 +63,17 @@ attribute|default|description
 ---------|-------|-----------
 caseSensitive|false|Indicates whether comparisons should be case sensitive.
 className|null|give a custom class name to the root element
+inputStyle|{}|Styles passed directly to the `input` element.
+inputWrapperStyle|{}|Styles passed directly to the `input` wrapper `div`.
+listItemStyle|{}|Styles passed to each item in the dropdown list.
+listWrapperStyle|{}|Styles passed directly to the dropdown wrapper.
+selectedListItemStyle|{}|Styles passed directly to current 'active' item.
+width|430|width of the fuzzy searchbox
 distance|100|Determines how close the match must be to the fuzzy location (specified by location). An exact letter match which is distance characters away from the fuzzy location would score as a complete mismatch. A distance of 0 requires the match be at the exact location specified, a distance of 1000 would require a perfect match to be within 800 characters of the location to be found using a threshold of 0.8.
 id|null|The name of the identifier property. If specified, the returned result will be a list of the items' identifiers, otherwise it will be a list of the items.
 include|[]|An array of values that should be included from the searcher's output. When this array contains elements, each result in the list will be of the form `{ item: ..., include1: ..., include2: ... }`. Values you can include are score, matches. Eg: `{ include: ['score', 'matches' ] }`
 maxPatternLength|32|The maximum length of the pattern. The longer the pattern, the more intensive the search operation will be. Whenever the pattern exceeds the maxPatternLength, an error will be thrown.
 onSelect| noop | Function to be executed on selection of any result.
-width|430|width of the fuzzy searchbox
 keyForDisplayName|title|The key which should be used for list item text.
 keys|all[Array]|List of properties that will be searched. This also supports nested properties.
 list|null|Array of properties to be filtered.

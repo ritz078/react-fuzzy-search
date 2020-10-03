@@ -70,6 +70,28 @@ storiesOf('SearchBox', module)
   .add('Basic', () => (
     <FuzzySearch list={list} keys={['author', 'title']} width={430} onSelect={action('selected')} />
   ))
+  .add('Custom Styles', () => (
+    <FuzzySearch
+      list={list}
+      onSelect={action('selected')}
+      keys={['author', 'title']}
+      inputStyle={{
+        outline: '1px solid red',
+      }}
+      inputWrapperStyle={{
+        outline: '1px solid red',
+      }}
+      listItemStyle={{
+        backgroundColor: 'yellow',
+      }}
+      listWrapperStyle={{
+        border: '2px solid blue',
+      }}
+      selectedListItemStyle={{
+        color: 'red',
+      }}
+    />
+  ))
   .add('Custom Template', () => {
     function x(props, state, styles, clickHandler) {
       return state.results.map((val, i) => {
