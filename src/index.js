@@ -79,6 +79,7 @@ export default class FuzzySearch extends Component {
     location: PropTypes.number,
     placeholder: PropTypes.string,
     resultsTemplate: PropTypes.func,
+    shouldFillInputWithSelection: PropTypes.bool,
     shouldSort: PropTypes.bool,
     sortFn: PropTypes.func,
     threshold: PropTypes.number,
@@ -103,6 +104,7 @@ export default class FuzzySearch extends Component {
     width: 430,
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
+    shouldFillInputWithSelection: false,
     shouldSort: true,
     sortFn(a, b) {
       return a.score - b.score;
@@ -124,7 +126,6 @@ export default class FuzzySearch extends Component {
     this.state = {
       results: [],
       selectedIndex: 0,
-      selectedValue: {},
       value: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -174,6 +175,27 @@ export default class FuzzySearch extends Component {
     });
   }
 
+  selectItem(index) {
+    const { results } = this.state;
+    const { keyForDisplayName, onSelect, shouldFillInputWithSelection } = this.props
+
+    const selectedIndex = index || this.state.selectedIndex;
+    const result = results[selectedIndex];
+    if (result) {
+      // send result to onSelectMethod
+      onSelect(result);
+      // and set it as input value
+      this.setState({
+        value: shouldFillInputWithSelection ? (result[keyForDisplayName] || result) : ''
+      });
+    }
+    // hide dropdown
+    this.setState({
+      results: [],
+      selectedIndex: 0,
+    });
+  }
+
   handleKeyDown(e) {
     const { results, selectedIndex } = this.state;
 
@@ -191,31 +213,12 @@ export default class FuzzySearch extends Component {
 
       // Handle ENTER
     } else if (e.keyCode === 13) {
-      if (results[selectedIndex]) {
-        this.props.onSelect(results[this.state.selectedIndex]);
-        this.setState({
-          selectedValue: results[this.state.selectedIndex],
-        });
-      }
-      this.setState({
-        results: [],
-        selectedIndex: 0,
-        value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
-      });
+      this.selectItem();
     }
   }
 
   handleMouseClick(clickedIndex) {
-    const { results } = this.state;
-
-    if (results[clickedIndex]) {
-      this.props.onSelect(results[clickedIndex]);
-    }
-    this.setState({
-      results: [],
-      selectedIndex: 0,
-      value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
-    });
+    this.selectItem(clickedIndex);
   }
 
   render() {
