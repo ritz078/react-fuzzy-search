@@ -54,7 +54,7 @@ const styles = {
 
 function defaultResultsTemplate(props, state, styl, clickHandler) {
   return state.results.map((val, i) => {
-    const style = state.selectedIndex === i ? styl.selectedResultStyle : styl.resultsStyle;
+    const style = state.selectedIndex === i ? {...styl.selectedResultStyle, ...props.selectedListItemStyle} : {...styl.resultsStyle, ...props.listItemStyle };
     return (
       <div key={i} style={style} onClick={() => clickHandler(i)}>
         {val[props.keyForDisplayName]}
@@ -87,6 +87,11 @@ export default class FuzzySearch extends Component {
     autoFocus: PropTypes.bool,
     maxResults: PropTypes.number,
     options: PropTypes.object,
+    inputStyle: PropTypes.object,
+    inputWrapperStyle: PropTypes.object,
+    listItemStyle: PropTypes.object,
+    listWrapperStyle: PropTypes.object,
+    selectedListItemStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -107,6 +112,11 @@ export default class FuzzySearch extends Component {
     verbose: false,
     autoFocus: false,
     maxResults: 10,
+    inputStyle: {},
+    inputWrapperStyle: {},
+    listItemStyle: {},
+    listWrapperStyle: {},
+    selectedListItemStyle: {},
   };
 
   constructor(props) {
@@ -220,18 +230,18 @@ export default class FuzzySearch extends Component {
 
     return (
       <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
-        <div style={styles.searchBoxWrapper}>
+        <div style={{...styles.searchBoxWrapper, ...this.props.inputWrapperStyle}}>
           <input
             autoFocus={autoFocus}
             onChange={this.handleChange}
             placeholder={placeholder}
-            style={styles.searchBoxStyle}
+            style={{...styles.searchBoxStyle, ...this.props.inputStyle}}
             type="text"
             value={this.state.value}
           />
         </div>
         {this.state.results && this.state.results.length > 0 && (
-          <div style={styles.resultsWrapperStyle}>
+          <div style={{...styles.resultsWrapperStyle, ...this.props.listWrapperStyle}}>
             {resultsTemplate(this.props, this.state, styles, this.handleMouseClick)}
           </div>
         )}

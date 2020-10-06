@@ -142,4 +142,32 @@ describe('<FuzzySearch />', () => {
     // Each result should have a 'matches' array now with `includeMatches`
     expect(wrapper.state('results')[0].item.title).to.equal('The Great Gatsby');
   });
+
+  it('should support style props', () => {
+     const onChange = sinon.spy();
+     const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        inputStyle={{
+          outline: '1px solid red',
+        }}
+        inputWrapperStyle={{
+          outline: '1px solid red',
+        }}
+        resultStyle={{
+          backgroundColor: 'yellow',
+        }}
+        listWrapperStyle={{
+          border: '2px solid blue',
+        }}
+        selectedListItemStyle={{
+          backgroundColor: 'green',
+        }}
+      />,
+    );
+
+    expect(wrapper.find('input')).to.exist;
+  })
 });
