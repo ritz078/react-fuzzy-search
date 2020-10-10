@@ -170,4 +170,24 @@ describe('<FuzzySearch />', () => {
 
     expect(wrapper.find('input')).to.exist;
   })
+
+  it('should display all options onFocus when shouldShowDropdownAtStart passed in', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        keyForDisplayName="author"
+        list={list}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        options={{ includeMatches: true }}
+        shouldShowDropdownAtStart
+      />,
+    );
+
+    const input = wrapper.find('input');
+
+    input.simulate('focus');
+
+    expect(wrapper.state('results').length).to.not.equal(0);
+  });
 });

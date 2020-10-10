@@ -79,6 +79,7 @@ keys|all[Array]|List of properties that will be searched. This also supports nes
 list|null|Array of properties to be filtered.
 placeholder|'Search'|Placeholder of the searchbox
 resultsTemplate| Func | Template of the dropdown divs
+shouldShowDropdownAtStart|false|Allow the searchbox to act as a `filter` dropdown with initial values. Yields all results when the search value is blank.
 shouldSort| true | Whether to sort the result list, by score.
 sortFn|`Array.prototype.sort`|The function that is used for sorting the result list.
 threshold|0.6|At what point does the match algorithm give up. A threshold of `0.0` requires a perfect match (of both letters and location), a threshold of `1.0` would match anything.

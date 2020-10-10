@@ -56,7 +56,7 @@ function defaultResultsTemplate(props, state, styl, clickHandler) {
   return state.results.map((val, i) => {
     const style = state.selectedIndex === i ? {...styl.selectedResultStyle, ...props.selectedListItemStyle} : {...styl.resultsStyle, ...props.listItemStyle };
     return (
-      <div key={i} style={style} onClick={() => clickHandler(i)}>
+      <div tabIndex="0" key={i} style={style} onClick={() => clickHandler(i)}>
         {val[props.keyForDisplayName]}
       </div>
     );
@@ -79,6 +79,7 @@ export default class FuzzySearch extends Component {
     location: PropTypes.number,
     placeholder: PropTypes.string,
     resultsTemplate: PropTypes.func,
+    shouldShowDropdownAtStart: PropTypes.bool,
     shouldSort: PropTypes.bool,
     sortFn: PropTypes.func,
     threshold: PropTypes.number,
@@ -103,6 +104,7 @@ export default class FuzzySearch extends Component {
     width: 430,
     placeholder: 'Search',
     resultsTemplate: defaultResultsTemplate,
+    shouldShowDropdownAtStart: false,
     shouldSort: true,
     sortFn(a, b) {
       return a.score - b.score;
@@ -122,6 +124,7 @@ export default class FuzzySearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpen: !this.props.shouldShowDropdownAtStart,
       results: [],
       selectedIndex: 0,
       selectedValue: {},
@@ -131,6 +134,9 @@ export default class FuzzySearch extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseClick = this.handleMouseClick.bind(this);
     this.fuse = new Fuse(props.list, this.getOptions());
+    this.setDropdownRef = ref => {
+      this.dropdownRef = ref;
+    };
   }
 
   getOptions() {
@@ -168,8 +174,12 @@ export default class FuzzySearch extends Component {
   }
 
   handleChange(e) {
+    const shouldDisplayAllListItems = this.props.shouldShowDropdownAtStart && !e.target.value;
+
     this.setState({
-      results: this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
+      results: shouldDisplayAllListItems
+        ? this.props.list
+        : this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
       value: e.target.value,
     });
   }
@@ -219,7 +229,15 @@ export default class FuzzySearch extends Component {
   }
 
   render() {
-    const { autoFocus, className, list, placeholder, resultsTemplate, width } = this.props;
+    const {
+      autoFocus,
+      className,
+      list,
+      placeholder,
+      resultsTemplate,
+      shouldShowDropdownAtStart,
+      width,
+    } = this.props;
 
     // Update the search space list
     if (this.fuse.setCollection && list) {
@@ -229,7 +247,21 @@ export default class FuzzySearch extends Component {
     const mainClass = classNames('react-fuzzy-search', className);
 
     return (
-      <div className={mainClass} style={{ width }} onKeyDown={this.handleKeyDown}>
+      <div
+        className={mainClass}
+        ref={this.setDropdownRef}
+        style={{ width }}
+        onBlur={(e) => {
+          if (this.dropdownRef.contains(e.relatedTarget)) return;
+
+          if (shouldShowDropdownAtStart) {
+            this.setState({
+              isOpen: false,
+            });
+          }
+        }}
+        onKeyDown={this.handleKeyDown}
+      >
         <div style={{...styles.searchBoxWrapper, ...this.props.inputWrapperStyle}}>
           <input
             autoFocus={autoFocus}
@@ -238,9 +270,17 @@ export default class FuzzySearch extends Component {
             style={{...styles.searchBoxStyle, ...this.props.inputStyle}}
             type="text"
             value={this.state.value}
+            onFocus={() => {
+              if (shouldShowDropdownAtStart) {
+                this.setState({
+                  isOpen: true,
+                  results: this.state.value ? this.state.results : list,
+                });
+              }
+            }}
           />
         </div>
-        {this.state.results && this.state.results.length > 0 && (
+        {this.state.isOpen && this.state.results && this.state.results.length > 0 && (
           <div style={{...styles.resultsWrapperStyle, ...this.props.listWrapperStyle}}>
             {resultsTemplate(this.props, this.state, styles, this.handleMouseClick)}
           </div>
