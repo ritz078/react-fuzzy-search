@@ -28,7 +28,10 @@ const list = [{
       list={list}
       keys={['author', 'title']}
       width={430}
-      onSelect={action('selected')}
+      onSelect={(newSelectedItem) => {
+        // Local state setter defined elsewhere
+        setSelectedItem(newSelectedItem)
+      }}
     />
 ```
 
@@ -38,7 +41,10 @@ const list = [{
   list={list}
   keys={['author', 'title']}
   width={430}
-  onSelect={action('selected')}
+  onSelect={(newSelectedItem) => {
+    // Local state setter defined elsewhere
+    setSelectedItem(newSelectedItem)
+  }}
   resultsTemplate={(props, state, styles, clickHandler) => {
     return state.results.map((val, i) => {
       const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
