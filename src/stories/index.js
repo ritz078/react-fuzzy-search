@@ -119,6 +119,15 @@ storiesOf('SearchBox', module)
       />
     );
   })
+  .add('Show Dropdown at Start', () => (
+    <FuzzySearch
+      list={list}
+      keys={['author', 'title']}
+      width={430}
+      onSelect={action('selected')}
+      shouldShowDropdownAtStart
+    />
+  ))
   .add('Passthrough Options', () => {
     const template = (props, state, styles, click) =>
       state.results.map(({ item, matches }, i) => {
