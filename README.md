@@ -83,6 +83,7 @@ onSelect| noop | Function to be executed on selection of any result.
 keyForDisplayName|title|The key which should be used for list item text.
 keys|all[Array]|List of properties that will be searched. This also supports nested properties.
 list|null|Array of properties to be filtered.
+maxResults|10|Max number of results to show at once.
 placeholder|'Search'|Placeholder of the searchbox
 resultsTemplate| Func | Template of the dropdown divs
 shouldShowDropdownAtStart|false|Allow the searchbox to act as a `filter` dropdown with initial values. Yields all results when the search value is blank.
