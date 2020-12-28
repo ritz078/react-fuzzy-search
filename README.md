@@ -28,7 +28,10 @@ const list = [{
       list={list}
       keys={['author', 'title']}
       width={430}
-      onSelect={action('selected')}
+      onSelect={(newSelectedItem) => {
+        // Local state setter defined elsewhere
+        setSelectedItem(newSelectedItem)
+      }}
     />
 ```
 
@@ -38,7 +41,10 @@ const list = [{
   list={list}
   keys={['author', 'title']}
   width={430}
-  onSelect={action('selected')}
+  onSelect={(newSelectedItem) => {
+    // Local state setter defined elsewhere
+    setSelectedItem(newSelectedItem)
+  }}
   resultsTemplate={(props, state, styles, clickHandler) => {
     return state.results.map((val, i) => {
       const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
@@ -77,6 +83,7 @@ onSelect| noop | Function to be executed on selection of any result.
 keyForDisplayName|title|The key which should be used for list item text.
 keys|all[Array]|List of properties that will be searched. This also supports nested properties.
 list|null|Array of properties to be filtered.
+maxResults|10|Max number of results to show at once.
 placeholder|'Search'|Placeholder of the searchbox
 resultsTemplate| Func | Template of the dropdown divs
 shouldShowDropdownAtStart|false|Allow the searchbox to act as a `filter` dropdown with initial values. Yields all results when the search value is blank.

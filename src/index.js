@@ -127,7 +127,6 @@ export default class FuzzySearch extends Component {
       isOpen: !this.props.shouldShowDropdownAtStart,
       results: [],
       selectedIndex: 0,
-      selectedValue: {},
       value: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -201,31 +200,31 @@ export default class FuzzySearch extends Component {
 
       // Handle ENTER
     } else if (e.keyCode === 13) {
-      if (results[selectedIndex]) {
-        this.props.onSelect(results[this.state.selectedIndex]);
-        this.setState({
-          selectedValue: results[this.state.selectedIndex],
-        });
-      }
-      this.setState({
-        results: [],
-        selectedIndex: 0,
-        value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
-      });
+      this.selectItem();
     }
   }
 
-  handleMouseClick(clickedIndex) {
+  selectItem(index) {
     const { results } = this.state;
-
-    if (results[clickedIndex]) {
-      this.props.onSelect(results[clickedIndex]);
+    const selectedIndex = index || this.state.selectedIndex;
+    const result = results[selectedIndex];
+    if (result) {
+      // send result to onSelectMethod
+      this.props.onSelect(result);
+      // and set it as input value
+      this.setState({
+        value: result[this.props.keyForDisplayName],
+      });
     }
+    // hide dropdown
     this.setState({
       results: [],
       selectedIndex: 0,
-      value: results[this.state.selectedIndex].item ? results[this.state.selectedIndex].item.value : '',
     });
+  }
+
+  handleMouseClick(clickedIndex) {
+    this.selectItem(clickedIndex);
   }
 
   render() {
