@@ -70,6 +70,7 @@ export default class FuzzySearch extends Component {
     distance: PropTypes.number,
     id: PropTypes.string,
     include: PropTypes.array,
+    isDropdown: PropTypes.bool,
     maxPatternLength: PropTypes.number,
     onSelect: PropTypes.func.isRequired,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -99,6 +100,7 @@ export default class FuzzySearch extends Component {
     caseSensitive: false,
     distance: 100,
     include: [],
+    isDropdown: false,
     keyForDisplayName: 'title',
     location: 0,
     width: 430,
@@ -176,6 +178,7 @@ export default class FuzzySearch extends Component {
     const shouldDisplayAllListItems = this.props.shouldShowDropdownAtStart && !e.target.value;
 
     this.setState({
+      isOpen: true,
       results: shouldDisplayAllListItems
         ? this.props.list
         : this.fuse.search(e.target.value).slice(0, this.props.maxResults - 1),
@@ -231,6 +234,7 @@ export default class FuzzySearch extends Component {
     const {
       autoFocus,
       className,
+      isDropdown,
       list,
       placeholder,
       resultsTemplate,
@@ -253,7 +257,8 @@ export default class FuzzySearch extends Component {
         onBlur={(e) => {
           if (this.dropdownRef.contains(e.relatedTarget)) return;
 
-          if (shouldShowDropdownAtStart) {
+          // Check shouldShowDropdownAtStart for backwards-compatibility.
+          if (isDropdown || shouldShowDropdownAtStart) {
             this.setState({
               isOpen: false,
             });
