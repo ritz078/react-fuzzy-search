@@ -190,4 +190,33 @@ describe('<FuzzySearch />', () => {
 
     expect(wrapper.state('results').length).to.not.equal(0);
   });
+
+  it('with inputProps provided', () => {
+    const onChange = sinon.spy();
+    const wrapper = mount(
+      <FuzzySearch
+        list={list}
+        inputProps={{
+          defaultValue: 'Hello there!',
+          onChange,
+        }}
+        onSelect={onChange}
+        keys={['author', 'title']}
+        options={{ includeMatches: true }}
+        defaultValue="Hello there!"
+      />,
+    );
+
+    const input = wrapper.find('input');
+
+    expect(input.get(0).value).to.equal('Hello there!');
+
+    input.simulate('change', {
+      target: {
+        value: 't',
+      },
+    });
+
+    expect(onChange.calledOnce).to.equal(true);
+  });
 });

@@ -70,6 +70,7 @@ export default class FuzzySearch extends Component {
     distance: PropTypes.number,
     id: PropTypes.string,
     include: PropTypes.array,
+    inputProps: PropTypes.object,
     isDropdown: PropTypes.bool,
     maxPatternLength: PropTypes.number,
     onSelect: PropTypes.func.isRequired,
@@ -100,6 +101,7 @@ export default class FuzzySearch extends Component {
     caseSensitive: false,
     distance: 100,
     include: [],
+    inputProps: {},
     isDropdown: false,
     keyForDisplayName: 'title',
     location: 0,
@@ -129,7 +131,7 @@ export default class FuzzySearch extends Component {
       isOpen: !this.props.shouldShowDropdownAtStart,
       results: [],
       selectedIndex: 0,
-      value: '',
+      value: props.inputProps.defaultValue || '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -175,6 +177,12 @@ export default class FuzzySearch extends Component {
   }
 
   handleChange(e) {
+    e.persist();
+
+    if (this.props.inputProps.onChange) {
+      this.props.inputProps.onChange(e);
+    }
+
     const shouldDisplayAllListItems = this.props.shouldShowDropdownAtStart && !e.target.value;
 
     this.setState({
@@ -234,6 +242,7 @@ export default class FuzzySearch extends Component {
     const {
       autoFocus,
       className,
+      inputProps,
       isDropdown,
       list,
       placeholder,
@@ -268,18 +277,23 @@ export default class FuzzySearch extends Component {
       >
         <div style={{...styles.searchBoxWrapper, ...this.props.inputWrapperStyle}}>
           <input
+            {...inputProps}
             autoFocus={autoFocus}
             onChange={this.handleChange}
             placeholder={placeholder}
             style={{...styles.searchBoxStyle, ...this.props.inputStyle}}
             type="text"
             value={this.state.value}
-            onFocus={() => {
+            onFocus={(e) => {
               if (shouldShowDropdownAtStart) {
                 this.setState({
                   isOpen: true,
                   results: this.state.value ? this.state.results : list,
                 });
+              }
+
+              if(inputProps.onFocus) {
+                inputProps.onFocus(e)
               }
             }}
           />

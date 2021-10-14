@@ -69,6 +69,7 @@ attribute|default|description
 ---------|-------|-----------
 caseSensitive|false|Indicates whether comparisons should be case sensitive.
 className|null|give a custom class name to the root element
+inputProps|{}|Props passed directly to the input element. i.e. `defaultValue`, `onChange`, etc.
 inputStyle|{}|Styles passed directly to the `input` element.
 inputWrapperStyle|{}|Styles passed directly to the `input` wrapper `div`.
 isDropdown|false|Hide the result list on blur.
