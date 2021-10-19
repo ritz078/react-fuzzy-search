@@ -70,6 +70,15 @@ storiesOf('SearchBox', module)
   .add('Basic', () => (
     <FuzzySearch list={list} keys={['author', 'title']} width={430} onSelect={action('selected')} />
   ))
+  .add('Dropdown behavior', () => (
+    <FuzzySearch
+      isDropdown
+      list={list}
+      keys={['author', 'title']}
+      width={430}
+      onSelect={action('selected')}
+    />
+  ))
   .add('Custom Styles', () => (
     <FuzzySearch
       list={list}
