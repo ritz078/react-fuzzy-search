@@ -73,7 +73,7 @@ export default class FuzzySearch extends Component {
     inputProps: PropTypes.object,
     isDropdown: PropTypes.bool,
     maxPatternLength: PropTypes.number,
-    onSelect: PropTypes.func.isRequired,
+    onSelect: PropTypes.func,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     keyForDisplayName: PropTypes.string,
     keys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
@@ -221,7 +221,9 @@ export default class FuzzySearch extends Component {
     const result = results[selectedIndex];
     if (result) {
       // send result to onSelectMethod
-      this.props.onSelect(result);
+      if (this.props.onSelect) {
+        this.props.onSelect(result);
+      }
       // and set it as input value
       this.setState({
         value: result[this.props.keyForDisplayName],
